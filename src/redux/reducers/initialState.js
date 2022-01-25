@@ -1,5 +1,8 @@
 //başşlangıç -- default stateler
 
 export default{
-    currentCategory:{categoryName:"Baverages"}
+    currentCategory:{},
+    categories : [],
+    products : [],
+    cart: []
 }
