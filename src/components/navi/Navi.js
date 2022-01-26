@@ -22,7 +22,7 @@ export default class Navi extends Component {
             >
               <NavItem>
                 <NavLink href="/components/">
-                  Components
+                  ÜRÜN EKLE
                 </NavLink>
               </NavItem>
               <NavItem>
