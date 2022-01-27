@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { render } from "react-dom";
 import { connect } from "react-redux";
-import { Outlet } from "react-router-dom";
 import { getCategories } from "../../redux/actions/categoryActions"
 import { saveProduct } from "../../redux/actions/productActions"
 import ProductDetail from "./ProductDetail";
 
 function AddOrUpdateProduct({ products, categories, getProducts, getCategories, history, saveProduct, ...props }) {
     const [product, setProduct] = useState({ ...props.product })
+
+    const [errors, setErrors] = useState({})
+
     useEffect(() => {
         if (categories.length === 0) {
             getCategories()
@@ -19,7 +22,17 @@ function AddOrUpdateProduct({ products, categories, getProducts, getCategories, 
         setProduct(previousProduct => ({
             ...previousProduct,
             [name]: name === "categoryId" ? parseInt(value, 10) : value
-        }))
+        }));
+        validate(name, value)
+    }
+
+    function validate(name, value) {
+        if (name === "productName" && value === "") {
+            setErrors(previousErrors => ({ ...previousErrors, productName: "Ürün İsmi Girmeniz Gerekiyor" }))
+        }
+        else{
+            setErrors(previousErrors => ({ ...previousErrors, productName: "" }))
+        }
     }
 
     function handleSave(event) {
@@ -28,15 +41,15 @@ function AddOrUpdateProduct({ products, categories, getProducts, getCategories, 
             history.push("/")
         })
     }
-    return (
-        <ProductDetail product={product} categories={categories} onChange={handleChange} onSave={handleSave} />,
-        <Outlet/>
+    return(
+        <ProductDetail product={product} categories={categories} onChange={handleChange} onSave={handleSave} errors={errors} />
+
     )
-    
+
 }
 
 export function getProductById(products, productId) {
-    let product = products.find(product => product.id === productId) || null
+    let product = products.find(product => product.id == productId) || null
     return product;
 }
 
